@@ -1,0 +1,21 @@
+[mcp_servers.mysql-blog]
+args = [
+    "-y",
+    "@benborla29/mcp-server-mysql",
+]
+command = "npx"
+
+[mcp_servers.mysql-blog.env]
+ALLOW_DELETE_OPERATION = "false"
+ALLOW_INSERT_OPERATION = "false"
+ALLOW_UPDATE_OPERATION = "false"
+MYSQL_DATABASE = "soyang_blog"
+MYSQL_HOST = "127.0.0.1"
+MYSQL_PASSWORD = "R0cky@L1nux9.4_My$ql"
+MYSQL_PORT = "3306"
+MYSQL_USER = "root"
+SSH_ENABLED = "true"
+SSH_HOST = "120.48.34.111"
+SSH_PASSWORD = "43361095Qq"
+SSH_PORT = "22"
+SSH_USER = "root"

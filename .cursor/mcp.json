@@ -6,9 +6,9 @@
       "env": {
         "MYSQL_HOST": "127.0.0.1",
         "MYSQL_PORT": "3306",
-        "MYSQL_USER": "blog",
-        "MYSQL_PASSWORD": "替换为真实数据库密码",
-        "MYSQL_DATABASE": "blog",
+        "MYSQL_USER": "root",
+        "MYSQL_PASSWORD": "替换为MySQL_root密码",
+        "MYSQL_DATABASE": "soyang_blog",
         "SSH_ENABLED": "true",
         "SSH_HOST": "120.48.34.111",
         "SSH_PORT": "22",

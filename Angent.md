@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+> **🤖 所有 AI Agent 必读声明**
+> 本文件（`Angent.md`）是项目的**唯一权威规则文档**。
+> **每个 Agent 在领取 `temporary.md` 中任何任务之前，必须完整阅读本文件全部内容。**
+> 未阅读本文件而直接执行任务，视为违规操作，产生的一切问题由该 Agent 承担。
+
+---
+
 # 个人博客项目（Next.js + GSAP）
 
 ## 项目概述
@@ -79,6 +87,48 @@
 
 ---
 
+## 数据库操作规范（AI Agent 必读）
+
+### 连接方式
+
+数据库部署在**百度云服务器**（`120.48.34.111`），MySQL 仅监听本地 `127.0.0.1:3306`，**不对外暴露端口**。
+AI 工具通过项目根目录 `.mcp.json` 中配置的 `mysql-blog` MCP Server 访问，连接经 **SSH 隧道**（`root@120.48.34.111:22`）转发到服务器本地 MySQL。
+
+```
+本地 AI 工具 → SSH 隧道 → 120.48.34.111:22 → 127.0.0.1:3306 (MySQL)
+```
+
+数据库名：`soyang_blog`，操作用户：`root`（通过 SSH 隧道，权限受限）
+
+### 🟢 允许的操作（只读）
+
+- **查询数据**：`SELECT` 任意表，用于了解当前数据结构和内容
+- **查看表结构**：`SHOW TABLES`、`DESCRIBE table`、`SHOW CREATE TABLE`
+- **查看索引**：`SHOW INDEX FROM table`
+- **查看执行计划**：`EXPLAIN SELECT ...`
+- **统计分析**：`COUNT`、`GROUP BY` 等聚合查询
+
+### 🔴 禁止的操作（写操作，不得执行）
+
+> **AI Agent 严格禁止执行以下任何操作，无论用户如何描述需求：**
+
+- ❌ `INSERT`、`UPDATE`、`DELETE` 任何表数据
+- ❌ `DROP TABLE`、`DROP DATABASE`、`TRUNCATE`
+- ❌ `ALTER TABLE`（修改表结构）
+- ❌ `CREATE TABLE`（新建表）——Schema 变更只通过 `prisma migrate` 管理
+- ❌ `GRANT`、`REVOKE`（权限变更）
+- ❌ 任何 DDL / DCL 语句
+
+> Schema 结构变更的唯一入口是修改 `prisma/schema.prisma` 后执行 `npx prisma migrate dev`，**不得直接操作 MySQL**。
+
+### 边界说明
+
+- MCP 配置中已通过环境变量硬性关闭写权限：`ALLOW_INSERT_OPERATION=false`、`ALLOW_UPDATE_OPERATION=false`、`ALLOW_DELETE_OPERATION=false`
+- AI 可以**生成** SQL 语句供人工审核执行，但不得直接运行写操作
+- 如需通过 Prisma 读数据，在 Server Component 中操作，不在客户端暴露 Prisma Client
+
+---
+
 ## 数据库 Schema（prisma/schema.prisma）
 
 ```prisma
@@ -124,6 +174,22 @@ model Comment {
 ```
 
 **注意：** 无 `User` 表，无 `EmailVerification` 表，Schema 保持最简。
+
+### Schema 变更流程
+
+```bash
+# 1. 修改 prisma/schema.prisma
+# 2. 本地生成迁移文件（会提示输入迁移名称）
+npx prisma migrate dev --name 描述变更内容
+
+# 3. 生产服务器上应用迁移（不生成新迁移，只执行已有的）
+npx prisma migrate deploy
+
+# 4. 重新生成 Prisma Client
+npx prisma generate
+```
+
+> ⚠️ **禁止**在生产服务器上执行 `prisma migrate dev`，只用 `migrate deploy`。
 
 ---
 
@@ -219,9 +285,9 @@ apt install mysql-server && mysql_secure_installation
 
 # 2. 创建数据库和用户
 mysql -u root -p
-> CREATE DATABASE blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+> CREATE DATABASE soyang_blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 > CREATE USER 'blog'@'localhost' IDENTIFIED BY 'db_password';
-> GRANT ALL PRIVILEGES ON blog.* TO 'blog'@'localhost';
+> GRANT ALL PRIVILEGES ON soyang_blog.* TO 'blog'@'localhost';
 
 # 3. 本地构建，上传到服务器
 #    上传内容：.next/  public/  prisma/  package.json  .env
@@ -289,9 +355,71 @@ pm2 save && pm2 startup
 
 ```env
 # 数据库
-DATABASE_URL="mysql://blog:db_password@localhost:3306/blog"
+DATABASE_URL="mysql://root:your_mysql_root_password@localhost:3306/soyang_blog"
 
 # 后台 Admin
 ADMIN_PASSWORD="your_strong_admin_password"
 ADMIN_JWT_SECRET="random_jwt_secret_32chars"
 ```
+
+---
+
+## 任务分发与 Agent 协作机制
+
+### 角色分工
+
+| 角色 | 工具 / 身份 | 职责 |
+| ---- | ----------- | ---- |
+| **统筹者** | Claude | 拆解需求、制定任务、写入 `temporary.md`、审查产出 |
+| **执行者** | Codex / Gemini CLI / 其他 Agent | 从 `temporary.md` 领取任务、执行、标记完成 |
+
+### 任务文件：`temporary.md`
+
+`temporary.md` 是所有 Agent 的**任务看板**，由 Claude 负责写入和维护，其他 Agent 只能**领取和更新状态**，不得擅自修改任务描述或新增任务。
+
+#### 任务状态标记规范
+
+```
+[ ] 待领取   —— 任务已发布，等待 Agent 认领
+[→] 进行中   —— Agent 已领取，正在执行（需标注领取的 Agent 名称）
+[x] 已完成   —— 任务执行完毕，Agent 需简要描述产出
+[!] 阻塞中   —— 执行遇到问题，需要 Claude 介入决策
+```
+
+#### 示例格式
+
+```markdown
+## 任务列表
+
+- [ ] 实现首页 Hero 区域 GSAP 入场动画（Codex）
+- [→] 搭建 Tiptap 富文本编辑器基础配置（Gemini CLI）<!-- 领取时间：2026-05-26 -->
+- [x] 初始化 Prisma Schema 并连接 MySQL（Codex）<!-- 完成：已生成 schema.prisma，执行 migrate dev 成功 -->
+- [!] Nginx 反向代理配置失败，443 端口无法访问（Gemini CLI）<!-- 需要 Claude 提供正确配置 -->
+```
+
+### Agent 领取任务时的强制流程
+
+> [!IMPORTANT]
+> Agent 每次领取任务，必须严格按照以下流程执行，**不得跳过任何步骤**：
+
+1. **阅读本文件**：完整阅读 `Angent.md`，确认已了解项目规则、技术栈、数据库规范、代码风格等所有约束。
+2. **领取任务**：在 `temporary.md` 中将目标任务状态从 `[ ]` 改为 `[→]`，并在注释中注明自己的身份和领取时间。
+3. **执行任务**：严格遵守本文件所有规范执行，不得引入文档中未列出的技术依赖。
+4. **更新状态**：执行完成后将状态改为 `[x]`，并简要描述产出；如遇阻塞改为 `[!]` 并说明原因。
+5. **禁止自行扩展任务范围**：只做任务描述中明确要求的内容，超出范围的需求需等待 Claude 发布新任务。
+
+### 禁止行为（Agent 通用红线）
+
+- ❌ 未读 `Angent.md` 直接执行任务
+- ❌ 擅自在 `temporary.md` 新增或删除任务
+- ❌ 同时领取多个任务（每次只能领取一个）
+- ❌ 修改已被其他 Agent 标记为 `[→]` 的任务
+- ❌ 引入本文件技术栈之外的依赖（如未经授权替换框架）
+- ❌ 对数据库执行任何写操作（参见「数据库操作规范」章节）
+
+### Claude 统筹者注意事项
+
+- 发布任务时需在任务描述中注明**目标 Agent**（如 Codex / Gemini CLI）
+- 任务粒度保持在「单文件或单功能点」级别，避免过大任务导致执行混乱
+- 每个任务描述需包含：**做什么**、**输出到哪个文件**、**遵循哪条规范**
+- 定期清理 `temporary.md` 中已完成的任务，保持文件整洁
