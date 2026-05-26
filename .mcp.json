@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "mysql-blog": {
+      "command": "npx",
+      "args": ["-y", "@benborla29/mcp-server-mysql"],
+      "env": {
+        "MYSQL_HOST": "127.0.0.1",
+        "MYSQL_PORT": "3306",
+        "MYSQL_USER": "blog",
+        "MYSQL_PASSWORD": "替换为真实数据库密码",
+        "MYSQL_DATABASE": "blog",
+        "SSH_ENABLED": "true",
+        "SSH_HOST": "120.48.34.111",
+        "SSH_PORT": "22",
+        "SSH_USER": "root",
+        "SSH_PASSWORD": "替换为真实SSH密码",
+        "ALLOW_INSERT_OPERATION": "false",
+        "ALLOW_UPDATE_OPERATION": "false",
+        "ALLOW_DELETE_OPERATION": "false"
+      }
+    }
+  }
+}
