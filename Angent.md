@@ -407,6 +407,7 @@ ADMIN_JWT_SECRET="random_jwt_secret_32chars"
 3. **执行任务**：严格遵守本文件所有规范执行，不得引入文档中未列出的技术依赖。
 4. **更新状态**：执行完成后将状态改为 `[x]`，并简要描述产出；如遇阻塞改为 `[!]` 并说明原因。
 5. **禁止自行扩展任务范围**：只做任务描述中明确要求的内容，超出范围的需求需等待 Claude 发布新任务。
+6. **提交到 GitHub**：每完成一个任务节点后，必须立即执行 Git 提交并推送到远程仓库（详见「Git 提交规范」章节），**提交信息必须使用中文**。
 
 ### 禁止行为（Agent 通用红线）
 
@@ -416,6 +417,66 @@ ADMIN_JWT_SECRET="random_jwt_secret_32chars"
 - ❌ 修改已被其他 Agent 标记为 `[→]` 的任务
 - ❌ 引入本文件技术栈之外的依赖（如未经授权替换框架）
 - ❌ 对数据库执行任何写操作（参见「数据库操作规范」章节）
+- ❌ 完成任务后未提交到 GitHub 远程仓库即关闭任务
+- ❌ 使用英文或非中文撰写 Git commit message
+
+---
+
+## Git 提交规范
+
+> [!IMPORTANT]
+> 每完成一个**任务节点**（或阶段性进展），必须立即 Git 提交并推送远程仓库，**不得攒到最后批量提交**。
+
+### 提交命令
+
+```bash
+# 1. 暂存变更
+git add .
+
+# 2. 用中文写 commit message 并提交
+git commit -m "<类型>: <中文描述>"
+
+# 3. 推送到远程
+git push origin main
+```
+
+### Commit Message 格式
+
+```
+<类型>: <简洁的中文描述（不超过50字）>
+
+# 可选：多行正文，说明做了什么、为什么这样做
+```
+
+### 类型前缀（中文描述，英文标识）
+
+| 前缀 | 适用场景 |
+|------|----------|
+| `feat` | 新增功能或页面 |
+| `fix` | 修复 Bug |
+| `style` | 样式/UI 调整，不影响逻辑 |
+| `refactor` | 代码重构，功能不变 |
+| `chore` | 配置、依赖、脚本等杂项变更 |
+| `docs` | 文档更新（含 `Angent.md`、`temporary.md`） |
+| `db` | 数据库 Schema / 迁移相关 |
+| `deploy` | 部署配置（Nginx、PM2、服务器环境）|
+
+### 示例
+
+```bash
+git commit -m "feat: 实现首页 Hero 区域 GSAP 文字入场动画"
+git commit -m "feat: 完成 Tiptap 富文本编辑器基础配置，启用代码高亮扩展"
+git commit -m "fix: 修复文章详情页 TOC 目录滚动定位偏移问题"
+git commit -m "chore: 初始化 Prisma Schema，完成 Post/Tag/Comment 表设计"
+git commit -m "docs: 更新 Angent.md，新增任务分发与 Git 提交规范"
+git commit -m "deploy: 配置 Nginx 反向代理，将 3000 端口映射到 80/443"
+```
+
+### 注意事项
+
+- `.env` 文件已在 `.gitignore` 中，**禁止提交任何包含密码或密钥的文件**
+- `public/uploads/` 目录下的用户上传图片视情况决定是否纳入版本控制
+- 如果推送失败，先执行 `git pull --rebase origin main` 解决冲突后再推送
 
 ### Claude 统筹者注意事项
 
