@@ -94,7 +94,7 @@
   - 遵循规范：前端视觉规范章节（页脚要求）
   - 前置条件：T09 已完成
 
-- [ ] **T15** 配置 SEO Metadata 与 sitemap.xml（Codex）
+- [x] **T15** 配置 SEO Metadata 与 sitemap.xml（Codex）<!-- 完成：在 app/layout.tsx 配置全局 metadata 与 Open Graph；在 app/posts/[slug]/page.tsx 实现 generateMetadata；新增 app/sitemap.ts 生成静态路由与已发布文章的 sitemap -->
   - 做什么：在 `app/layout.tsx` 配置全局 `metadata`（title、description、Open Graph）；在 `app/posts/[slug]/page.tsx` 配置动态 `generateMetadata`；创建 `app/sitemap.ts`，查询所有已发布文章生成 sitemap
   - 输出文件：更新 `app/layout.tsx`、`app/posts/[slug]/page.tsx`，新增 `app/sitemap.ts`
   - 遵循规范：功能优先级第 8 条

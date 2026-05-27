@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CommentSection from "@/components/CommentSection";
 import TableOfContents, {
@@ -9,6 +10,8 @@ type PostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://soyang.blog";
+
 function formatDate(value: Date) {
   return new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",
@@ -17,10 +20,8 @@ function formatDate(value: Date) {
   }).format(value);
 }
 
-export default async function PostDetailPage({ params }: PostPageProps) {
-  const { slug } = await params;
-
-  const post = await prisma.post.findFirst({
+async function getPublishedPost(slug: string) {
+  return prisma.post.findFirst({
     where: {
       slug,
       published: true,
@@ -29,6 +30,46 @@ export default async function PostDetailPage({ params }: PostPageProps) {
       tags: true,
     },
   });
+}
+
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPublishedPost(slug);
+
+  if (!post) {
+    return {
+      title: "文章不存在",
+      description: "未找到对应文章。",
+    };
+  }
+
+  const description =
+    post.summary ||
+    `阅读《${post.title}》，了解这篇文章的完整内容与相关评论。`;
+
+  return {
+    title: post.title,
+    description,
+    alternates: {
+      canonical: `/posts/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description,
+      type: "article",
+      url: `${siteUrl}/posts/${post.slug}`,
+      publishedTime: post.createdAt.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
+      tags: post.tags.map((tag) => tag.name),
+    },
+  };
+}
+
+export default async function PostDetailPage({ params }: PostPageProps) {
+  const { slug } = await params;
+  const post = await getPublishedPost(slug);
 
   if (!post) {
     notFound();

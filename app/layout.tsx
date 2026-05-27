@@ -4,9 +4,26 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://soyang.blog";
+
 export const metadata: Metadata = {
-  title: "Soyang Blog",
-  description: "Personal blog built with Next.js 14",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Soyang Blog",
+    template: "%s | Soyang Blog",
+  },
+  description: "一个关于前端工程、产品细节与长期写作的个人博客。",
+  openGraph: {
+    title: "Soyang Blog",
+    description: "一个关于前端工程、产品细节与长期写作的个人博客。",
+    url: siteUrl,
+    siteName: "Soyang Blog",
+    locale: "zh_CN",
+    type: "website",
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default async function RootLayout({
