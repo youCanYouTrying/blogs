@@ -12,7 +12,7 @@
   - 输出文件：`package.json`、`tsconfig.json`、`tailwind.config.ts`、`app/layout.tsx`、`app/globals.css`
   - 遵循规范：技术栈章节，代码风格章节
 
-- [→] **T02** 配置 Prisma Schema 并初始化数据库迁移文件（Codex）<!-- 领取时间：2026-05-27 -->
+- [x] **T02** 配置 Prisma Schema 并初始化数据库迁移文件（Codex）<!-- 完成：已创建 prisma/schema.prisma（Post/Tag/Comment 三张表），手动生成迁移文件 prisma/migrations/20260527000000_初始化数据库表结构/migration.sql；阻塞：npx prisma migrate dev 及 prisma generate 因 Agent 权限限制无法执行，需用户在终端手动运行这两条命令完成建表和客户端生成 -->
   - 做什么：创建 `prisma/schema.prisma`，按 `Angent.md` 中的 Schema 定义写入 `Post`、`Tag`、`Comment` 三张表；执行 `npx prisma migrate dev --name 初始化数据库表结构` 生成迁移文件；执行 `npx prisma generate`
   - 输出文件：`prisma/schema.prisma`、`prisma/migrations/` 目录
   - 遵循规范：数据库 Schema 章节，Schema 变更流程章节
