@@ -66,7 +66,7 @@
   - 遵循规范：动画规范章节，前端视觉规范章节，功能优先级 1-3 条
   - 前置条件：T05、T09 已完成
 
-- [ ] **T11** 实现文章详情页（Codex）
+- [x] **T11** 实现文章详情页（Codex）<!-- 完成：创建 app/posts/[slug]/page.tsx 查询已发布文章并用 prose 渲染 HTML，创建 components/TableOfContents.tsx 解析 H1-H4 生成目录，并接入 @tailwindcss/typography -->
   - 做什么：创建 `app/posts/[slug]/page.tsx`（Server Component），按 slug 查询文章，用 `dangerouslySetInnerHTML` 渲染 HTML 内容，外层加 `prose prose-neutral` 类；创建 `components/TableOfContents.tsx`，解析 HTML 中的标题标签生成 TOC 目录，侧边栏展示
   - 输出文件：`app/posts/[slug]/page.tsx`、`components/TableOfContents.tsx`
   - 遵循规范：前端视觉规范章节（文章详情页要求），代码风格章节
