@@ -88,7 +88,7 @@
   - 遵循规范：评论系统章节，前端视觉规范章节
   - 前置条件：T08、T11 已完成
 
-- [ ] **T14** 实现关于我页面与页脚（Codex）
+- [x] **T14** 实现关于我页面与页脚（Codex）<!-- 完成：创建 app/about/page.tsx，创建 components/Footer.tsx，并在 app/layout.tsx 中按前台/后台路由条件接入 Navbar 与 Footer -->
   - 做什么：创建 `app/about/page.tsx`，简洁的自我介绍页面；创建 `components/Footer.tsx`，一行版权信息 + 社交链接（文字链接）；在 `app/layout.tsx` 中引入 Navbar 和 Footer
   - 输出文件：`app/about/page.tsx`、`components/Footer.tsx`，更新 `app/layout.tsx`
   - 遵循规范：前端视觉规范章节（页脚要求）
