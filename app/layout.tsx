@@ -21,9 +21,6 @@ export const metadata: Metadata = {
     locale: "zh_CN",
     type: "website",
   },
-  alternates: {
-    canonical: "/",
-  },
 };
 
 export default async function RootLayout({

@@ -4,7 +4,6 @@ import CommentSection from "@/components/CommentSection";
 import TableOfContents, {
   decoratePostContent,
 } from "@/components/TableOfContents";
-import { prisma } from "@/lib/prisma";
 
 type PostPageProps = {
   params: Promise<{ slug: string }>;
@@ -21,15 +20,22 @@ function formatDate(value: Date) {
 }
 
 async function getPublishedPost(slug: string) {
-  return prisma.post.findFirst({
-    where: {
-      slug,
-      published: true,
-    },
-    include: {
-      tags: true,
-    },
-  });
+  try {
+    const { prisma } = await import("@/lib/prisma");
+
+    return await prisma.post.findFirst({
+      where: {
+        slug,
+        published: true,
+      },
+      include: {
+        tags: true,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to load published post", error);
+    return null;
+  }
 }
 
 export async function generateMetadata({

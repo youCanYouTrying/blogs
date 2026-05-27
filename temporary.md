@@ -60,7 +60,7 @@
   - 输出文件：`components/Navbar.tsx`
   - 遵循规范：动画规范章节，前端视觉规范章节（导航栏组件要求）
 
-- [!] **T10** 实现首页 Hero 区域与文章列表（Codex）<!-- 暂缓：依赖 T09 完成后再安排 -->
+- [x] **T10** 实现首页 Hero 区域与文章列表（Codex）<!-- 完成：更新 app/page.tsx 查询已发布文章并渲染首页；创建 components/HeroSection.tsx 实现 Hero 入场动画；创建 components/PostCard.tsx 实现文章卡片滚动淡入 -->
   - 做什么：更新 `app/page.tsx`（Server Component），从数据库查询已发布文章列表；创建 `components/HeroSection.tsx`（`"use client"`），2-3 行自我介绍文字，GSAP 逐行入场动画；创建 `components/PostCard.tsx`（`"use client"`），展示标题/日期/摘要/标签，ScrollTrigger 淡入上移动画
   - 输出文件：`app/page.tsx`、`components/HeroSection.tsx`、`components/PostCard.tsx`
   - 遵循规范：动画规范章节，前端视觉规范章节，功能优先级 1-3 条
