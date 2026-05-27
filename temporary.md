@@ -49,7 +49,7 @@
   - 遵循规范：图片上传规范章节
   - 前置条件：T03 已完成
 
-- [→] **T08** 实现评论读写 API（Codex）<!-- 领取时间：2026-05-27 -->
+- [x] **T08** 实现评论读写 API（Codex）<!-- 完成：创建 app/api/comments/route.ts，GET 按 postId 查询评论列表（倒序，返回 id/nickname/content/createdAt），POST 校验 postId/nickname/content 字段并调用 hasSensitiveWord 过滤敏感词，通过则写入数据库返回 201 -->
   - 做什么：创建 `app/api/comments/route.ts`，`GET` 按 `postId` 查询评论列表（倒序）；`POST` 接收 `{ postId, nickname, content }`，服务端敏感词过滤，通过则写入数据库
   - 输出文件：`app/api/comments/route.ts`
   - 遵循规范：评论系统章节，数据库操作规范章节
