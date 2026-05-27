@@ -12,13 +12,13 @@
   - 输出文件：`package.json`、`tsconfig.json`、`tailwind.config.ts`、`app/layout.tsx`、`app/globals.css`
   - 遵循规范：技术栈章节，代码风格章节
 
-- [ ] **T02** 配置 Prisma Schema 并初始化数据库迁移文件（Codex）
+- [→] **T02** 配置 Prisma Schema 并初始化数据库迁移文件（Codex）<!-- 领取时间：2026-05-27 -->
   - 做什么：创建 `prisma/schema.prisma`，按 `Angent.md` 中的 Schema 定义写入 `Post`、`Tag`、`Comment` 三张表；执行 `npx prisma migrate dev --name 初始化数据库表结构` 生成迁移文件；执行 `npx prisma generate`
   - 输出文件：`prisma/schema.prisma`、`prisma/migrations/` 目录
   - 遵循规范：数据库 Schema 章节，Schema 变更流程章节
   - 前置条件：本地 `.env` 已配置 `DATABASE_URL`（由用户手动创建，不提交到 git）
 
-- [ ] **T03** 实现后台 Admin 鉴权工具函数与登录接口（Codex）
+- [x] **T03** 实现后台 Admin 鉴权工具函数与登录接口（Codex）<!-- 完成：创建 lib/admin-auth.ts 实现 signAdminToken（jsonwebtoken，7天有效期）和 verifyAdminToken；创建 app/api/admin/login/route.ts 实现 POST 登录接口，密码为空返回 400，密码错误返回 401，匹配则签发 JWT 写入 HTTP-only cookie -->
   - 做什么：创建 `lib/admin-auth.ts`，实现 JWT 签发（`signAdminToken`）和校验（`verifyAdminToken`）两个函数；创建 `app/api/admin/login/route.ts`，`POST` 接收 `{ password }`，与 `ADMIN_PASSWORD` 环境变量对比，匹配则签发 JWT 写入 HTTP-only cookie，返回 `{ ok: true }`
   - 输出文件：`lib/admin-auth.ts`、`app/api/admin/login/route.ts`
   - 遵循规范：后台鉴权方案章节，代码风格章节
@@ -28,7 +28,7 @@
   - 输出文件：`app/admin/layout.tsx`、`app/admin/login/page.tsx`
   - 遵循规范：后台鉴权方案章节，前端视觉规范章节（浅色主题，克制风格）
 
-- [ ] **T05** 实现 Prisma Client 单例与敏感词过滤封装（Codex）
+- [x] **T05** 实现 Prisma Client 单例与敏感词过滤封装（Codex）<!-- 完成：创建 lib/prisma.ts 导出 globalThis 缓存的 PrismaClient 单例；创建 lib/sensitive.ts 封装 sensitive-word CJS 模块，导出 hasSensitiveWord(text) 函数 -->
   - 做什么：创建 `lib/prisma.ts`，导出全局单例 Prisma Client（防止开发模式下重复实例化）；创建 `lib/sensitive.ts`，封装 `sensitive-word` 库，导出 `filterSensitive(text: string): boolean` 函数（返回 true 表示命中敏感词）
   - 输出文件：`lib/prisma.ts`、`lib/sensitive.ts`
   - 遵循规范：技术栈章节，代码风格章节
