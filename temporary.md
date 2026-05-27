@@ -37,7 +37,7 @@
 
 ## 第二期：核心页面与 API（MVP 续）
 
-- [→] **T06** 实现文章 CRUD API（Codex）<!-- 领取时间：2026-05-27 -->
+- [x] **T06** 实现文章 CRUD API（Codex）<!-- 完成：创建 app/api/admin/posts/route.ts 实现 GET 列表（分页+tags关联，按 createdAt 倒序）和 POST 新建（tags connectOrCreate）；创建 app/api/admin/posts/[id]/route.ts 实现 GET 单篇、PUT 更新（tags 先 set 再 connectOrCreate）、DELETE 删除（级联删除 comments）；所有接口统一校验 admin_token cookie -->
   - 做什么：创建 `app/api/admin/posts/route.ts`，实现 `GET`（列表，含分页）、`POST`（新建文章）；创建 `app/api/admin/posts/[id]/route.ts`，实现 `GET`（单篇）、`PUT`（更新）、`DELETE`（删除）；所有接口内部独立校验 admin token
   - 输出文件：`app/api/admin/posts/route.ts`、`app/api/admin/posts/[id]/route.ts`
   - 遵循规范：Admin 接口安全章节，数据库操作规范章节
