@@ -72,7 +72,7 @@
   - 遵循规范：前端视觉规范章节（文章详情页要求），代码风格章节
   - 前置条件：T05 已完成
 
-- [ ] **T12** 实现 Tiptap 富文本编辑器与后台文章管理页（Codex）
+- [x] **T12** 实现 Tiptap 富文本编辑器与后台文章管理页（Codex）<!-- 完成：安装 Tiptap 与 lowlight 依赖；创建 components/admin/Editor.tsx、PostForm.tsx；创建 app/admin/page.tsx、app/admin/posts/new/page.tsx、app/admin/posts/[id]/edit/page.tsx，并补充编辑器占位符样式 -->
   - 做什么：安装 Tiptap 相关依赖（`@tiptap/react`、`@tiptap/starter-kit`、`@tiptap/extension-image`、`@tiptap/extension-link`、`@tiptap/extension-code-block-lowlight`、`lowlight`）；创建 `components/admin/Editor.tsx`（`"use client"`），配置所有必须扩展；创建 `components/admin/PostForm.tsx`；创建 `app/admin/page.tsx`（文章列表管理）、`app/admin/posts/new/page.tsx`、`app/admin/posts/[id]/edit/page.tsx`
   - 输出文件：`components/admin/Editor.tsx`、`components/admin/PostForm.tsx`、`app/admin/page.tsx`、`app/admin/posts/new/page.tsx`、`app/admin/posts/[id]/edit/page.tsx`
   - 遵循规范：Tiptap 编辑器配置章节，前端视觉规范章节

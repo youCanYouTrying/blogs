@@ -23,3 +23,15 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
 }
+
+.tiptap-editor > *:first-child {
+  margin-top: 0;
+}
+
+.tiptap-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: #a8a29e;
+}
