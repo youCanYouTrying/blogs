@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import CommentSection from "@/components/CommentSection";
 import TableOfContents, {
   decoratePostContent,
 } from "@/components/TableOfContents";
@@ -84,6 +85,8 @@ export default async function PostDetailPage({ params }: PostPageProps) {
             className="prose prose-neutral mt-10 max-w-none text-[1.05rem] leading-8 prose-headings:scroll-mt-28 prose-headings:font-semibold prose-a:text-amber-800 prose-a:no-underline hover:prose-a:text-amber-900 prose-blockquote:border-stone-300 prose-blockquote:text-stone-600 prose-code:text-stone-800 prose-pre:bg-stone-950 prose-pre:text-stone-100"
             dangerouslySetInnerHTML={{ __html: html }}
           />
+
+          <CommentSection postId={post.id} />
         </article>
 
         <TableOfContents headings={headings} />

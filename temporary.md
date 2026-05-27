@@ -82,7 +82,7 @@
 
 ## 第三期：补全功能（MVP 收尾）
 
-- [ ] **T13** 实现评论区组件（Codex）
+- [x] **T13** 实现评论区组件（Codex）<!-- 完成：创建 components/CommentSection.tsx，实现昵称/内容输入、提交与评论列表倒序展示，并在 app/posts/[slug]/page.tsx 中接入评论区 -->
   - 做什么：创建 `components/CommentSection.tsx`（`"use client"`），昵称输入框 + 内容输入框 + 提交按钮，调用 `/api/comments`；展示评论列表（倒序，昵称/时间/内容，无头像）；在 `app/posts/[slug]/page.tsx` 中引入
   - 输出文件：`components/CommentSection.tsx`，更新 `app/posts/[slug]/page.tsx`
   - 遵循规范：评论系统章节，前端视觉规范章节
