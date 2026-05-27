@@ -23,7 +23,7 @@
   - 输出文件：`lib/admin-auth.ts`、`app/api/admin/login/route.ts`
   - 遵循规范：后台鉴权方案章节，代码风格章节
 
-- [ ] **T04** 实现 Admin 后台布局守卫与登录页（Codex）
+- [→] **T04** 实现 Admin 后台布局守卫与登录页（Codex）<!-- 领取时间：2026-05-27 -->
   - 做什么：创建 `app/admin/layout.tsx`，读取 cookie 中的 admin JWT，未登录重定向到 `/admin/login`；创建 `app/admin/login/page.tsx`，一个简洁的密码输入表单，提交后调用 `/api/admin/login`，成功跳转到 `/admin`
   - 输出文件：`app/admin/layout.tsx`、`app/admin/login/page.tsx`
   - 遵循规范：后台鉴权方案章节，前端视觉规范章节（浅色主题，克制风格）
@@ -37,19 +37,19 @@
 
 ## 第二期：核心页面与 API（MVP 续）
 
-- [ ] **T06** 实现文章 CRUD API（Codex）
+- [→] **T06** 实现文章 CRUD API（Codex）<!-- 领取时间：2026-05-27 -->
   - 做什么：创建 `app/api/admin/posts/route.ts`，实现 `GET`（列表，含分页）、`POST`（新建文章）；创建 `app/api/admin/posts/[id]/route.ts`，实现 `GET`（单篇）、`PUT`（更新）、`DELETE`（删除）；所有接口内部独立校验 admin token
   - 输出文件：`app/api/admin/posts/route.ts`、`app/api/admin/posts/[id]/route.ts`
   - 遵循规范：Admin 接口安全章节，数据库操作规范章节
   - 前置条件：T03、T05 已完成
 
-- [ ] **T07** 实现图片上传 API（Codex）
+- [x] **T07** 实现图片上传 API（Codex）<!-- 完成：创建 app/api/admin/upload/route.ts，接收 multipart/form-data，校验 admin_token cookie，限制文件类型（jpeg/png/webp/gif）和大小（5MB），存储到 public/uploads/YYYY-MM/时间戳_原文件名.ext，返回 { url } -->
   - 做什么：创建 `app/api/admin/upload/route.ts`，接收 `multipart/form-data`，校验 admin token，限制文件类型（jpeg/png/webp/gif）和大小（5MB），存储到 `public/uploads/YYYY-MM/时间戳_原文件名.ext`，返回 `{ url: "/uploads/..." }`
   - 输出文件：`app/api/admin/upload/route.ts`
   - 遵循规范：图片上传规范章节
   - 前置条件：T03 已完成
 
-- [ ] **T08** 实现评论读写 API（Codex）
+- [→] **T08** 实现评论读写 API（Codex）<!-- 领取时间：2026-05-27 -->
   - 做什么：创建 `app/api/comments/route.ts`，`GET` 按 `postId` 查询评论列表（倒序）；`POST` 接收 `{ postId, nickname, content }`，服务端敏感词过滤，通过则写入数据库
   - 输出文件：`app/api/comments/route.ts`
   - 遵循规范：评论系统章节，数据库操作规范章节
